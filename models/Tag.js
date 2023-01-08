@@ -12,8 +12,8 @@ Tag.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    tag_id: {
-      type: DataTypes.INTEGER,
+    tag_name: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
     // define columns
