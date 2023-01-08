@@ -21,7 +21,7 @@ CREATE TABLE products (
 
 CREATE TABLE tags (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    tag_name VARCHAR(100)
+    tag_name VARCHAR(100) NULL
 );
 
 CREATE TABLE product_tags (
