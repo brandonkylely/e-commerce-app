@@ -1,3 +1,5 @@
+// TODO: attribute exclude? set product and tag id to camel case to avoid duplication, test on insomnia
+
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
@@ -9,7 +11,7 @@ router.get('/', async (req, res) => {
   // be sure to include its associated Category and Tag data
   try {
     const productData = await Product.findAll({
-      include: [{model: Category}, {model: Tag, attribute: {exclude: ["product_id", "tag_id"]}, through: ProductTag}],
+      include: [{model: Category}, {model: Tag, attribute: {exclude: ["productId", "tagId"]}, through: ProductTag}],
 
     });
     res.status(200).json(productData);
@@ -50,10 +52,10 @@ router.post('/', (req, res) => {
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
       if (req.body.tagIds.length) {
-        const productTagIdArr = req.body.tagIds.map((tag_id) => {
+        const productTagIdArr = req.body.tagIds.map((tagId) => {
           return {
-            product_id: product.id,
-            tag_id,
+            productId: product.id,
+            tagId,
           };
         });
         return ProductTag.bulkCreate(productTagIdArr);
@@ -78,23 +80,23 @@ router.put('/:id', (req, res) => {
   })
     .then((product) => {
       // find all associated tags from ProductTag
-      return ProductTag.findAll({ where: { product_id: req.params.id } });
+      return ProductTag.findAll({ where: { productId: req.params.id } });
     })
     .then((productTags) => {
-      // get list of current tag_ids
-      const productTagIds = productTags.map(({ tag_id }) => tag_id);
-      // create filtered list of new tag_ids
+      // get list of current tagIds
+      const productTagIds = productTags.map(({ tagId }) => tagId);
+      // create filtered list of new tagIds
       const newProductTags = req.body.tagIds
-        .filter((tag_id) => !productTagIds.includes(tag_id))
-        .map((tag_id) => {
+        .filter((tagId) => !productTagIds.includes(tagId))
+        .map((tagId) => {
           return {
-            product_id: req.params.id,
-            tag_id,
+            productId: req.params.id,
+            tagId,
           };
         });
       // figure out which ones to remove
       const productTagsToRemove = productTags
-        .filter(({ tag_id }) => !req.body.tagIds.includes(tag_id))
+        .filter(({ tagId }) => !req.body.tagIds.includes(tagId))
         .map(({ id }) => id);
 
       // run both actions
