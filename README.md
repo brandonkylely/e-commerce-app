@@ -28,6 +28,12 @@
 
   Run "node server" in your terminal. Use the following routes to interact with your database. If you with to send JSON objects to the database, you may use a REST client such as Insomnia to add or update your data.
 
+  http://localhost:3001/api/categories/
+
+  http://localhost:3001/api/products/
+
+  http://localhost:3001/api/tags/
+
   ## Contribution
 
   N/a
